@@ -6,6 +6,8 @@ public class ConversorValor extends javax.swing.JFrame {
 
     public ConversorDecimal dec = new ConversorDecimal();
     public ConversorOctal octal = new ConversorOctal();
+    public ConversorBinario bin = new ConversorBinario();
+    public ConversorHex hex = new ConversorHex();
 
     public ConversorValor() {
         initComponents();
@@ -174,18 +176,41 @@ public class ConversorValor extends javax.swing.JFrame {
     private void jbConverterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConverterActionPerformed
         // TODO add your handling code here:
         int valorEntrada = 0;
-        valorEntrada = Integer.parseInt(tfentrada.getText());
         if (cbtipo.getSelectedIndex() == 0) {
+            valorEntrada = Integer.parseInt(tfentrada.getText());
             tfdecimal.setText("");
             tfbinario.setText(dec.convDecToBin(valorEntrada));
             tfhexadecimal.setText(dec.convDecToHex(valorEntrada));
             tfoctal.setText(dec.convDecToOctal(valorEntrada));
         } else if (cbtipo.getSelectedIndex() == 1) {
-
+            valorEntrada = Integer.parseInt(tfentrada.getText());
+            String valor = Integer.toString(valorEntrada);
+            int tamanho = valor.length();
+            boolean ebinario = true;
+            for (int i = 0; i < tamanho; i++) {
+                if (valor.charAt(i) > '1') {
+                    ebinario = false;
+                    break;
+                }
+            }
+            if (ebinario == true) {
+                tfbinario.setText("");
+                tfdecimal.setText(bin.convBinToDec(valor));
+                int valor2 = Integer.parseInt(bin.convBinToDec(valor));
+                tfoctal.setText(dec.convDecToOctal(valor2));
+                tfhexadecimal.setText(dec.convDecToHex(valor2));
+            } else {
+                JOptionPane.showMessageDialog(null, "Não pode conter número maior que 1");
+            }
         } else if (cbtipo.getSelectedIndex() == 2) {
-
+            String valor = tfentrada.getText();
+            tfhexadecimal.setText("");
+            tfdecimal.setText(hex.convHexToDec(valor));
+            int valor2 = Integer.parseInt(hex.convHexToDec(valor));
+            tfoctal.setText(dec.convDecToOctal(valor2));
+            tfbinario.setText(dec.convDecToBin(valor2));
         } else {
-
+            valorEntrada = Integer.parseInt(tfentrada.getText());
             String valor = Integer.toString(valorEntrada);
             int tamanho = valor.length();
             boolean eOctal = true;
